@@ -34,3 +34,4 @@ virtualenv-clone==0.5.7
 watchfiles==0.18.1
 websockets==10.4
 SQLAlchemy==1.4.44
+databases==0.6.2
