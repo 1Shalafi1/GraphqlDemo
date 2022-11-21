@@ -1,7 +1,9 @@
 import datetime
 
+from ariadne.asgi import GraphQL
 from fastapi import FastAPI
 
+from app.graphql.route import ariadne_schema
 from app.routes.actor import actor_router
 from app.routes.address import address_router
 from app.routes.category import category_router
@@ -30,8 +32,7 @@ app.include_router(category_router, prefix='/category')
 
 
 # graphql endpoint
-#
-#
+app.add_route('/graphqlAriadne', GraphQL(schema=ariadne_schema))
 # Default endpoints
 @app.get('/')
 def ping():
