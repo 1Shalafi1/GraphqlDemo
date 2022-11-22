@@ -19,7 +19,7 @@ def _list(skip: int = 0, limit: int = 10, enrich: bool = False, db: DbSession = 
     return [ActorOutput.from_orm(actor) for actor in db_actors]
 
 
-@actor_router.put('{actor_id}/films', tags=['actors'], response_model=ActorOutputEnriched)
+@actor_router.put('/{actor_id}/films', tags=['actors'], response_model=ActorOutputEnriched)
 def assign_films(actor_id: int, films_data: Optional[List[FilmInput]] = None, films_ids: Optional[List[int]] = None,
                  db: DbSession = Depends(get_db)):
     return Actor.add_actor_films(db=db, actor_id=actor_id, films_data=films_data, films_ids=films_ids)

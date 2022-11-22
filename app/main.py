@@ -14,7 +14,8 @@ from app.routes.payment import payment_router
 from app.routes.staff import staff_router
 from app.routes.store import store_router
 
-app = FastAPI()
+app = FastAPI(swagger_ui_parameters={"syntaxHighlight.theme": "arta"})
+
 # Routes
 app.include_router(actor_router, prefix='/actor')
 app.include_router(address_router, prefix='/address')

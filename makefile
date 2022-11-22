@@ -5,7 +5,7 @@ run:
 	docker run -rm -d --name api -p 80:80 graphql
 
 run-compose:
-	docker-compose -f -d docker-compose.yml up --build
+	docker-compose -f docker-compose.yml up -d --build
 
 run-compose-with-logging:
 	docker-compose -f docker-compose.yml up --build
