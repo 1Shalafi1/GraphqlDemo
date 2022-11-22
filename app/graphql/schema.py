@@ -23,6 +23,6 @@ type_defs = """
     }
     
     type Query {
-        hello: [Result]
+        hello: [TestUnion]
     }
 """

@@ -21,35 +21,23 @@ def resolve_error_type(obj, *_):
 def resolve_hello(*_):
     return [
         {
-            'test': 'Beatka Dupa',
-            'elo': {
-                'subtype': 'account.publisher',
-                'name': 'Beatka',
-                'value_test_publisher': 2137
-            }
+            'subtype': 'account.publisher',
+            'name': 'Beatka',
+            'value_test_publisher': 2137
         },
         {
-            'test': 'Stanisław Dupa',
-            'elo': {
-                'subtype': 'account.network',
-                'name': 'Stanisław',
-                'value_test_network': True
-            }
+            'subtype': 'account.network',
+            'name': 'Stanisław',
+            'value_test_network': True
         },
         {
-            'test': 'Andrzej Dupa',
-            'elo': {
-                'subtype': 'account.partner',
-                'name': 'Andrzej',
-                'value_test_partner': "TestStringValu źćżżźćąś∂Ń"
-            }
+            'subtype': 'account.partner',
+            'name': 'Andrzej',
+            'value_test_partner': "TestStringValu źćżżźćąś∂Ń"
         },
         {
-            'test': 'Jarosław Dupa',
-            'elo': {
-                'subtype': 'account.network',
-                'name': 'Jarosław',
-                'value_test_network': False
-            }
+            'subtype': 'account.network',
+            'name': 'Jarosław',
+            'value_test_network': False
         },
     ]
