@@ -25,10 +25,10 @@ class Actor(Base):
     last_name = Column(String, nullable=False)
     last_update = Column(TIMESTAMP)
 
-    films = relationship('Film', secondary=film_actor)
+    films = relationship('Film', secondary=film_actor, lazy='subquery')
 
     @classmethod
-    def get_list(cls, db: DbSession, limit: int = 10, skip: int = 0, **filters) -> ActorBase:
+    def get_list(cls, db: DbSession, limit: int = 10, skip: int = 0, **filters) -> List[ActorBase]:
         return db.query(cls).offset(skip).limit(limit).all()
 
     @classmethod
