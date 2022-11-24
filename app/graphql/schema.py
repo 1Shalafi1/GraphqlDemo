@@ -6,7 +6,7 @@ model_type_defs = """
         
         last_update: String!
     
-        films: [Film]   
+        films(limit: Int = 10, skip: Int = 0): [Film]   
     }
     
     type Film {
@@ -26,14 +26,16 @@ model_type_defs = """
 
         last_update: String!
         
-        actors: [Actor]
-        categories: [Category]
+        actors(limit: Int = 10, skip: Int = 0): [Actor]
+        categories(limit: Int = 10, skip: Int = 0): [Category]
     }
     
     type Category {
         category_id: ID!
         name: String!
         last_update: String!
+        
+        films(limit: Int = 10, skip: Int = 10): [Film]
     }
 """
 

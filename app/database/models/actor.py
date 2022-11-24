@@ -24,7 +24,7 @@ class Actor(Base, AbstractModel):
     last_name = Column(String, nullable=False)
     last_update = Column(TIMESTAMP)
 
-    films = relationship('Film', secondary=film_actor, lazy='subquery', back_populates='actors')
+    films = relationship('Film', secondary=film_actor, lazy='dynamic', back_populates='actors')
 
     @classmethod
     def add_actor_films(cls, db: DbSession, actor_id, films_data: Optional[List[FilmInput]] = None,

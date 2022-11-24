@@ -32,5 +32,5 @@ class Film(Base, AbstractModel):
 
     last_update = Column(TIMESTAMP)
 
-    actors = relationship('Actor', secondary=film_actor, lazy='subquery', back_populates="films")
-    categories = relationship('Category', secondary=film_category, lazy='subquery')
+    actors = relationship('Actor', secondary=film_actor, lazy='dynamic', back_populates="films")
+ 
