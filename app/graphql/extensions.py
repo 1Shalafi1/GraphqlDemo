@@ -12,5 +12,5 @@ class DatabaseExtension(Extension):
         print(f'Opening database {self.db}')
 
     def request_finished(self, context):
-        self.db.close(
+        self.db.close()
         print(f'Closing database {self.db}')

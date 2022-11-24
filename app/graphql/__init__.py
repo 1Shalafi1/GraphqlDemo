@@ -4,10 +4,10 @@ from ariadne.asgi.handlers import GraphQLHTTPHandler
 from graphql import MiddlewareManager
 
 from .schema import compiled_schema
-from .resolvers import query, films, categories, actors
+from .resolvers import query, films, categories, actors, mutation
 from .extensions import DatabaseExtension
 
-schema = make_executable_schema(compiled_schema, query, films, categories, actors)
+schema = make_executable_schema(compiled_schema, query, mutation, films, categories, actors)
 
 graphql_app = GraphQL(
     schema,

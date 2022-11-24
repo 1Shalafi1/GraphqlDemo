@@ -18,15 +18,3 @@ class Category(Base, AbstractModel):
     name = Column(VARCHAR(25))
     last_update = Column(TIMESTAMP)
     films = relationship('Film', secondary=film_category, lazy='dynamic', back_populates="categories")
-
-    @classmethod
-    def create(cls, db: DbSession, data: CategoryInput) -> CategoryOutput:
-        new_obj = cls(
-            **data.dict(),
-            last_update=datetime.utcnow(),
-        )
-        db.add(new_obj)
-        db.commit()
-        db.refresh(new_obj)
-
-        return new_obj

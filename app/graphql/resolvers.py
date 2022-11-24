@@ -1,12 +1,14 @@
-from ariadne import ObjectType, QueryType
+from ariadne import ObjectType, QueryType, MutationType
 
 from app.database.models.actor import Actor
 from app.database.models.category import Category
 from app.database.models.film import Film
 from app.dependencies.database import DBSession
-
+from app.schema.category import CategoryInput
 
 query = QueryType()
+mutation = MutationType()
+
 
 films = ObjectType("Film")
 categories = ObjectType("Category")
@@ -46,3 +48,11 @@ def resolve_films(obj, info, limit: int = 10, skip: int = 0):
         film_objects = Film.get_filtered(db=db, limit=limit, skip=skip)
     return film_objects
 
+
+#################
+### MUTATIONS ###
+#################
+@mutation.field("add_category")
+def resolve_add_category(obj, info, name):
+    db = info.context['database_session']
+    return Category.create(db, CategoryInput(name=name))

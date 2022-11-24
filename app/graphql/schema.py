@@ -45,6 +45,9 @@ query_type_defs = """
         films(skip: Int = 0, limit: Int = 10): [Film]!
         categories(skip: Int = 0, limit: Int = 10): [Category]!
     }
+    type Mutation {
+        add_category(name: String!): Category
+    }
 """
 
 
