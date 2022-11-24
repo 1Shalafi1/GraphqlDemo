@@ -17,7 +17,7 @@ def _list(skip: int = 0, limit: int = 10, db: DbSession = Depends(get_db)):
 
 @store_router.get('/{store_id}', tags=['Stores'], response_model=StoreOutput)
 def retrieve(store_id: int, db: DbSession = Depends(get_db)):
-    return Store.get_by_id(db=db, obj_id=store_id)
+    return Store.get_by_id(db=db, _id=store_id)
 
 
 @store_router.post('/', tags=['Stores'], response_model=StoreOutput)
@@ -27,4 +27,4 @@ def create(store: StoreInput, db: DbSession = Depends(get_db)):
 
 @store_router.put('/{store_id}', tags=['Stores'], response_model=StoreOutput)
 def update(store_id: int, store: StoreInput, db: DbSession = Depends(get_db)):
-    return Store.update(data=store, obj_id=store_id, db=db)
+    return Store.update(data=store, _id=store_id, db=db)

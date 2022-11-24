@@ -6,9 +6,7 @@ model_type_defs = """
         
         last_update: String!
     
-        films(limit: Int = 2, skip: Int = 0): [Film]
-        
-        
+        films: [Film]   
     }
     
     type Film {
@@ -27,16 +25,23 @@ model_type_defs = """
         fulltext: [String]
 
         last_update: String!
-
-        actors(limit: Int = 0, skip: Int = 0): [Actor]
+        
+        actors: [Actor]
+        categories: [Category]
     }
     
+    type Category {
+        category_id: ID!
+        name: String!
+        last_update: String!
+    }
 """
 
 query_type_defs = """
     type Query {
         actors(skip: Int = 0, limit: Int = 10): [Actor]!
         films(skip: Int = 0, limit: Int = 10): [Film]!
+        categories(skip: Int = 0, limit: Int = 10): [Category]!
     }
 """
 

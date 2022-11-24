@@ -27,7 +27,7 @@ def assign_films(actor_id: int, films_data: Optional[List[FilmInput]] = None, fi
 
 @actor_router.get('/{actor_id}', tags=['actors'], response_model=ActorOutputEnriched | ActorOutput)
 def retrieve(actor_id: int, enrich: bool = False, db: DbSession = Depends(get_db)):
-    db_actor = Actor.get_by_id(db=db, actor_id=actor_id)
+    db_actor = Actor.get_by_id(db=db, _id=actor_id)
     if enrich:
         return ActorOutputEnriched.from_orm(db_actor)
     return ActorOutput.from_orm(db_actor)
@@ -40,4 +40,4 @@ def create(actor: ActorInput, db: DbSession = Depends(get_db)):
 
 @actor_router.put('/{actor_id}', tags=['actors'], response_model=ActorOutput)
 def update(actor_id: int, actor: ActorInput, db: DbSession = Depends(get_db)):
-    return Actor.update(data=actor, actor_id=actor_id, db=db)
+    return Actor.update(data=actor, _id=actor_id, db=db)

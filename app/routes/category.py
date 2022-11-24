@@ -17,7 +17,7 @@ def _list(skip: int = 0, limit: int = 10, db: DbSession = Depends(get_db)):
 
 @category_router.get('/{category_id}', tags=['Categories'], response_model=CategoryOutput)
 def retrieve(category_id: int, db: DbSession = Depends(get_db)):
-    return Category.get_by_id(db=db, obj_id=category_id)
+    return Category.get_by_id(db=db, _id=category_id)
 
 
 @category_router.post('/', tags=['Categories'], response_model=CategoryOutput)
@@ -27,4 +27,4 @@ def create(category: CategoryInput, db: DbSession = Depends(get_db)):
 
 @category_router.put('/{category_id}', tags=['Categories'], response_model=CategoryOutput)
 def update(category_id: int, category: CategoryInput, db: DbSession = Depends(get_db)):
-    return Category.update(data=category, obj_id=category_id, db=db)
+    return Category.update(data=category, _id=category_id, db=db)

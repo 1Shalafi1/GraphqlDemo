@@ -17,7 +17,7 @@ def _list(skip: int = 0, limit: int = 10, db: DbSession = Depends(get_db)):
 
 @language_router.get('/{language_id}', tags=['languages'], response_model=LanguageBase)
 def retrieve(language_id: int, db: DbSession = Depends(get_db)):
-    return Language.get_by_id(db=db, language_id=language_id)
+    return Language.get_by_id(db=db, _id=language_id)
 
 
 @language_router.post('/', tags=['languages'], response_model=LanguageBase)
@@ -27,4 +27,4 @@ def create(language: LanguageInput, db: DbSession = Depends(get_db)):
 
 @language_router.put('/{language_id}', tags=['languages'], response_model=LanguageBase)
 def update(language_id: int, language: LanguageInput, db: DbSession = Depends(get_db)):
-    return Language.update(data=language, language_id=language_id, db=db)
+    return Language.update(data=language, _id=language_id, db=db)

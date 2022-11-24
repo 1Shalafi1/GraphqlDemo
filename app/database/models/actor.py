@@ -1,5 +1,4 @@
 import json
-from datetime import datetime
 from typing import Optional, List
 
 from fastapi import HTTPException
@@ -8,12 +7,12 @@ from sqlalchemy.orm import Session as DbSession, relationship
 
 from app.database.base import Base
 from app.database.models.__relations_tables import film_actor
+from app.database.models.base import AbstractModel
 from app.database.models.film import Film
-from app.schema.actor import ActorInput, ActorBase
 from app.schema.film import FilmInput
 
 
-class Actor(Base):
+class Actor(Base, AbstractModel):
     __tablename__ = 'actor'
     __table_args__ = (
         Index('actor_pkey', "actor_id"),
@@ -25,28 +24,7 @@ class Actor(Base):
     last_name = Column(String, nullable=False)
     last_update = Column(TIMESTAMP)
 
-    films = relationship('Film', secondary=film_actor, lazy='subquery')
-
-    @classmethod
-    def get_list(cls, db: DbSession, limit: int = 10, skip: int = 0, **filters) -> List[ActorBase]:
-        return db.query(cls).offset(skip).limit(limit).all()
-
-    @classmethod
-    def get_by_id(cls, db: DbSession, actor_id: int) -> ActorBase:
-        return db.query(cls).filter(cls.actor_id == actor_id).first()
-
-    @classmethod
-    def create(cls, db: DbSession, data: ActorInput) -> ActorBase:
-        new_user = cls(
-            first_name=data.first_name,
-            last_name=data.last_name,
-            last_update=datetime.utcnow()
-        )
-        db.add(new_user)
-        db.commit()
-        db.refresh(new_user)
-
-        return new_user
+    films = relationship('Film', secondary=film_actor, lazy='subquery', back_populates='actors')
 
     @classmethod
     def add_actor_films(cls, db: DbSession, actor_id, films_data: Optional[List[FilmInput]] = None,
@@ -83,21 +61,3 @@ class Actor(Base):
         db.refresh(db_object)
 
         return db_object
-
-    @classmethod
-    def update(cls, db: DbSession, actor_id: int, data: ActorInput) -> ActorBase:
-        db_object = cls.get_by_id(db=db, actor_id=actor_id)
-        if not db_object:
-            raise HTTPException(status_code=404, detail='Actor not found')
-
-        for key, value in data.dict(exclude_unset=True).items():
-            setattr(db_object, key, value)
-        db_object.last_update = datetime.utcnow()
-        db.add(db_object)
-        db.commit()
-        db.refresh(db_object)
-
-        return db_object
-
-# SQlAlchemy model extras
-# TODO: Add triggers

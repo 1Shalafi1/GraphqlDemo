@@ -1,15 +1,14 @@
 from datetime import datetime
-from typing import List
 
-from fastapi import HTTPException
 from sqlalchemy import Integer, Column, TIMESTAMP, Index, VARCHAR
 from sqlalchemy.orm import Session as DbSession
 
 from app.database.base import Base
+from app.database.models.base import AbstractModel
 from app.schema.category import CategoryInput, CategoryOutput
 
 
-class Category(Base):
+class Category(Base, AbstractModel):
     __tablename__ = 'category'
     __table_args__ = (
         Index('category_pkey', 'category_id'),
@@ -32,26 +31,3 @@ class Category(Base):
         db.refresh(new_obj)
 
         return new_obj
-
-    @classmethod
-    def get_list(cls, db: DbSession, limit: int = 10, skip: int = 0, **filters) -> List[CategoryOutput]:
-        return db.query(cls).offset(skip).limit(limit).all()
-
-    @classmethod
-    def get_by_id(cls, db: DbSession, obj_id: int) -> CategoryOutput:
-        return db.query(cls).filter(cls.category_id == obj_id).first()
-
-    @classmethod
-    def update(cls, db: DbSession, obj_id: int, data: CategoryInput) -> CategoryOutput:
-        db_object = cls.get_by_id(db=db, obj_id=obj_id)
-        if not db_object:
-            raise HTTPException(status_code=404, detail=f'{cls.__name__} not found')
-
-        for key, value in data.dict(exclude_unset=True).items():
-            setattr(db_object, key, value)
-        db_object.last_update = datetime.utcnow()
-        db.add(db_object)
-        db.commit()
-        db.refresh(db_object)
-
-        return db_object
