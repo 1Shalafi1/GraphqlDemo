@@ -17,7 +17,7 @@ def _list(skip: int = 0, limit: int = 10, db: DbSession = Depends(get_db)):
 
 @customer_router.get('/{customer_id}', tags=['Customer'], response_model=CustomerOutput)
 def retrieve(customer_id: int, db: DbSession = Depends(get_db)):
-    return Customer.get_by_id(db=db, customer_id=customer_id)
+    return Customer.get_by_id(db=db, _id=customer_id)
 
 
 @customer_router.post('/', tags=['Customer'], response_model=CustomerOutput)
@@ -27,4 +27,4 @@ def create(customer: CustomerInput, db: DbSession = Depends(get_db)):
 
 @customer_router.put('/{customer_id}', tags=['Customer'], response_model=CustomerOutput)
 def update(customer_id: int, customer: CustomerInput, db: DbSession = Depends(get_db)):
-    return Customer.update(data=customer, customer_id=customer_id, db=db)
+    return Customer.update(data=customer, _id=customer_id, db=db)

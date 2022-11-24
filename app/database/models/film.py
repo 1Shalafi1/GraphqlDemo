@@ -1,17 +1,13 @@
-from datetime import datetime
-from typing import List
-
-from fastapi import HTTPException
 from sqlalchemy import ForeignKey, VARCHAR, Text, Numeric, String, ARRAY
 from sqlalchemy import Integer, Column, TIMESTAMP, Index
-from sqlalchemy.orm import Session as DbSession, relationship
+from sqlalchemy.orm import relationship
 
 from app.database.base import Base
 from app.database.models.__relations_tables import film_actor, film_category
-from app.schema.film import FilmOutput, FilmInput
+from app.database.models.base import AbstractModel
 
 
-class Film(Base):
+class Film(Base, AbstractModel):
     __tablename__ = 'film'
     __table_args__ = (
         Index('film_pkey', 'film_id'),
@@ -36,44 +32,5 @@ class Film(Base):
 
     last_update = Column(TIMESTAMP)
 
-    actors = relationship('Actor', secondary=film_actor)
-    categories = relationship('Category', secondary=film_category)
-
-    @classmethod
-    def create(cls, db: DbSession, data: FilmInput) -> FilmOutput:
-        new_obj = cls(
-            **data.dict(),
-            last_update=datetime.utcnow(),
-        )
-        db.add(new_obj)
-        db.commit()
-        db.refresh(new_obj)
-
-        return new_obj
-
-    @classmethod
-    def get_list(cls, db: DbSession, limit: int = 10, skip: int = 0) -> List[FilmOutput]:
-        return db.query(cls).offset(skip).limit(limit).all()
-
-    @classmethod
-    def get_list_by_id(cls, db: DbSession, ids: List[int]):
-        return db.query(cls).filter(cls.film_id.in_(ids))
-
-    @classmethod
-    def get_by_id(cls, db: DbSession, film_id: int) -> FilmOutput:
-        return db.query(cls).filter(cls.film_id == film_id).first()
-
-    @classmethod
-    def update(cls, db: DbSession, film_id: int, data: FilmInput) -> FilmOutput:
-        db_object = cls.get_by_id(db=db, film_id=film_id)
-        if not db_object:
-            raise HTTPException(status_code=404, detail='Address not found')
-
-        for key, value in data.dict(exclude_unset=True).items():
-            setattr(db_object, key, value)
-        db_object.last_update = datetime.utcnow()
-        db.add(db_object)
-        db.commit()
-        db.refresh(db_object)
-
-        return db_object
+    actors = relationship('Actor', secondary=film_actor, lazy='subquery', back_populates="films")
+    categories = relationship('Category', secondary=film_category, lazy='subquery')

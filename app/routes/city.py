@@ -17,7 +17,7 @@ def _list(skip: int = 0, limit: int = 10, db: DbSession = Depends(get_db)):
 
 @city_router.get('/{city_id}', tags=['Cities'], response_model=CityOutput)
 def retrieve(city_id: int, db: DbSession = Depends(get_db)):
-    return City.get_by_id(db=db, obj_id=city_id)
+    return City.get_by_id(db=db, _id=city_id)
 
 
 @city_router.post('/', tags=['Cities'], response_model=CityOutput)
@@ -27,4 +27,4 @@ def create(city: CityInput, db: DbSession = Depends(get_db)):
 
 @city_router.put('/{city_id}', tags=['Cities'], response_model=CityOutput)
 def update(city_id: int, city: CityInput, db: DbSession = Depends(get_db)):
-    return City.update(data=city, obj_id=city_id, db=db)
+    return City.update(data=city, _id=city_id, db=db)

@@ -17,7 +17,7 @@ def _list(skip: int = 0, limit: int = 10, db: DbSession = Depends(get_db)):
 
 @address_router.get('/{address_id}', tags=['Addresses'], response_model=AddressOutput)
 def retrieve(address_id: int, db: DbSession = Depends(get_db)):
-    return Address.get_by_id(db=db, address_id=address_id)
+    return Address.get_by_id(db=db, _id=address_id)
 
 
 @address_router.post('/', tags=['Addresses'], response_model=AddressOutput)
@@ -27,4 +27,4 @@ def create(address: AddressInput, db: DbSession = Depends(get_db)):
 
 @address_router.put('/{address_id}', tags=['Addresses'], response_model=AddressOutput)
 def update(address_id: int, address: AddressInput, db: DbSession = Depends(get_db)):
-    return Address.update(data=address, address_id=address_id, db=db)
+    return Address.update(data=address, _id=address_id, db=db)

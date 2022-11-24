@@ -20,7 +20,7 @@ def _list(skip: int = 0, limit: int = 10, enrich: bool = False, db: DbSession = 
 
 @film_router.get('/{film_id}', tags=['film'], response_model=FilmOutputEnriched | FilmOutput)
 def retrieve(film_id: int, enrich: bool = False, db: DbSession = Depends(get_db)):
-    db_film = Film.get_by_id(db=db, film_id=film_id)
+    db_film = Film.get_by_id(db=db, _id=film_id)
     if enrich is True:
         return FilmOutputEnriched.from_orm(db_film)
     return FilmOutput.from_orm(db_film)
@@ -33,4 +33,4 @@ def create(film: FilmInput, db: DbSession = Depends(get_db)):
 
 @film_router.put('/{film_id}', tags=['film'], response_model=FilmOutput)
 def update(film_id: int, film: FilmInput, db: DbSession = Depends(get_db)):
-    return Film.update(data=film, film_id=film_id, db=db)
+    return Film.update(data=film, _id=film_id, db=db)

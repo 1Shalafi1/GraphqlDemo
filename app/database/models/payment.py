@@ -1,16 +1,11 @@
-from datetime import datetime
-from typing import List
-
-from fastapi import HTTPException
 from sqlalchemy import ForeignKey, Numeric
 from sqlalchemy import Integer, Column, TIMESTAMP, Index
-from sqlalchemy.orm import Session as DbSession
 
 from app.database.base import Base
-from app.schema.film import FilmOutput, FilmInput
+from app.database.models.base import AbstractModel
 
 
-class Payment(Base):
+class Payment(Base, AbstractModel):
     __tablename__ = 'payment'
     __table_args__ = (
         Index('payment_pkey', 'payment_id'),
@@ -26,27 +21,3 @@ class Payment(Base):
     amount = Column(Numeric)
 
     payment_date = Column(TIMESTAMP)
-
-    @classmethod
-    def create(cls, db: DbSession, data: FilmInput) -> FilmOutput:
-        new_obj = cls(
-            **data.dict(),
-            payment=datetime.utcnow(),
-        )
-        db.add(new_obj)
-        db.commit()
-        db.refresh(new_obj)
-
-        return new_obj
-
-    @classmethod
-    def get_list(cls, db: DbSession, limit: int = 10, skip: int = 0) -> List[FilmOutput]:
-        return db.query(cls).offset(skip).limit(limit).all()
-
-    @classmethod
-    def get_by_id(cls, db: DbSession, film_id: int) -> FilmOutput:
-        return db.query(cls).filter(cls.film_id == film_id).first()
-
-    @classmethod
-    def update(cls, db: DbSession, film_id: int, data: FilmInput) -> FilmOutput:
-        raise HTTPException(status_code=405, detail='Method update is not allowed')
